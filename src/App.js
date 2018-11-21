@@ -1,8 +1,10 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer, useEffect, useContext, createContext } from "react";
 
 const apiKey = process.env.REACT_APP_GIPHY_API_KEY;
+const ReduxContext = createContext();
 
-const SearchBar = ({ query, dispatch }) => {
+const SearchBar = ({ query }) => {
+  const dispatch = useContext(ReduxContext);
   return (
     <input
       name="search"
@@ -73,11 +75,13 @@ const App = () => {
   );
 
   return (
-    <div style={{ padding: "20px" }}>
-      <SearchBar query={state.query} dispatch={dispatch} />
+    <ReduxContext.Provider value={dispatch}>
+      <div style={{ padding: "20px" }}>
+        <SearchBar query={state.query} />
 
-      {state.loading ? "Loading..." : <Giphs gifUrls={state.gifUrls} />}
-    </div>
+        {state.loading ? "Loading..." : <Giphs gifUrls={state.gifUrls} />}
+      </div>
+    </ReduxContext.Provider>
   );
 };
 
