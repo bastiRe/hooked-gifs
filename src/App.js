@@ -3,21 +3,6 @@ import React, { useReducer, useEffect, useContext, createContext } from "react";
 const apiKey = process.env.REACT_APP_GIPHY_API_KEY;
 const ReduxContext = createContext();
 
-const SearchBar = ({ query }) => {
-  const dispatch = useContext(ReduxContext);
-  return (
-    <input
-      name="search"
-      value={query}
-      placeholder="your search term"
-      style={{ marginBottom: "20px" }}
-      onChange={event =>
-        dispatch({ type: "CHANGE_QUERY", query: event.target.value })
-      }
-    />
-  );
-};
-
 const reducer = (state, action) => {
   switch (action.type) {
     case "CHANGE_QUERY":
@@ -41,6 +26,21 @@ const fetchGifs = async (query, dispatch) => {
   const gifUrls = giphyJson.data.map(gif => gif.images.fixed_width.url);
 
   dispatch({ type: "GIFS_LOADED", gifUrls });
+};
+
+const SearchBar = ({ query }) => {
+  const dispatch = useContext(ReduxContext);
+  return (
+    <input
+      name="search"
+      value={query}
+      placeholder="your search term"
+      style={{ marginBottom: "20px" }}
+      onChange={event =>
+        dispatch({ type: "CHANGE_QUERY", query: event.target.value })
+      }
+    />
+  );
 };
 
 const Giphs = ({ gifUrls }) => {
